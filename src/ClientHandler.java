@@ -16,7 +16,7 @@ public class ClientHandler {
 
 
     public void handleAddingSong() {
-        IO.println("╭─ Add Song ───────────────────────────╮");
+        IO.println("╔════════════════ Add Song════════════════╗");
         IO.print("Title: ");
         String title = sc.nextLine().trim();
 
@@ -50,7 +50,7 @@ public class ClientHandler {
 
         if (matches.isEmpty()) {
             IO.println("╠═════════════════════════════════════════════╣");
-            IO.println("║ No matching songs found.                   ║");
+            IO.println("║ No matching songs found.                    ║");
             IO.println("╚═════════════════════════════════════════════╝");
             return;
         }
@@ -66,19 +66,19 @@ public class ClientHandler {
         try {
             choice = Integer.parseInt(sc.nextLine().trim());
         } catch (NumberFormatException e) {
-            IO.println("║ Invalid number.                            ║");
+            IO.println("║ Invalid number.                             ║");
             IO.println("╚═════════════════════════════════════════════╝");
             return;
         }
 
         if (choice == 0) {
-            IO.println("║ Removal cancelled.                         ║");
+            IO.println("║ Removal cancelled.                          ║");
             IO.println("╚═════════════════════════════════════════════╝");
             return;
         }
 
         if (choice < 1 || choice > matches.size()) {
-            IO.println("║ Invalid choice.                            ║");
+            IO.println("║ Invalid choice.                             ║");
             IO.println("╚═════════════════════════════════════════════╝");
             return;
         }
@@ -116,13 +116,13 @@ public class ClientHandler {
     public void handleSorting() {
         IO.println("""
             ╔════════════════ SORT SONGS ════════════════╗
-            ║ Choose what part to be sorted by:         ║
-            ║                                           ║
-            ║  (1) Artist                               ║
-            ║  (2) Title                                ║
-            ║  (3) Rating                               ║
-            ║  (0) Cancel                               ║
-            ╚═══════════════════════════════════════════╝
+            ║ Choose what part to be sorted by:          ║
+            ║                                            ║
+            ║  (1) Artist                                ║
+            ║  (2) Title                                 ║
+            ║  (3) Rating                                ║
+            ║  (0) Cancel                                ║
+            ╚════════════════════════════════════════════╝
             """);
 
         IO.print("➜ Enter choice: ");
@@ -134,11 +134,11 @@ public class ClientHandler {
 
         IO.println("""
             ╔════════════════ SORT ORDER ════════════════╗
-            ║ What order would you like to sort by:     ║
-            ║                                           ║
-            ║  (1) Asc                                  ║
-            ║  (2) Desc                                 ║
-            ╚═══════════════════════════════════════════╝
+            ║ What order would you like to sort by:      ║
+            ║                                            ║
+            ║  (1) Asc                                   ║
+            ║  (2) Desc                                  ║
+            ╚════════════════════════════════════════════╝
             """);
 
         IO.print("➜ Enter order: ");
@@ -183,7 +183,7 @@ public class ClientHandler {
             IO.println("""
                 ╔════════════════ IMPORT SONGS ═══════════════╗
                 ║ Import folder does not exist or is invalid. ║
-                ╚══════════════════════════════════════════════╝
+                ╚═════════════════════════════════════════════╝
                 """);
             return;
         }
@@ -193,8 +193,8 @@ public class ClientHandler {
         if (files == null || files.length == 0) {
             IO.println("""
                 ╔════════════════ IMPORT SONGS ═══════════════╗
-                ║ No import files found.                     ║
-                ╚══════════════════════════════════════════════╝
+                ║ No import files found.                      ║
+                ╚═════════════════════════════════════════════╝
                 """);
             return;
         }
@@ -209,8 +209,8 @@ public class ClientHandler {
             IO.println("║  " + (i + 1) + ". " + files[i].getName());
         }
 
-        IO.println("║                                             ║");
-        IO.println("║  0. Cancel                                  ║");
+        IO.println("║                                              ║");
+        IO.println("║  0. Cancel                                   ║");
         IO.println("╚══════════════════════════════════════════════╝");
         IO.print("➜ Enter choice: ");
 
@@ -227,7 +227,7 @@ public class ClientHandler {
     public void handleExport() {
         IO.println("""
             ╔════════════════ EXPORT SONGS ═══════════════╗
-            ║ Enter a name for the export file:          ║
+            ║ Enter a name for the export file:           ║
             ╚═════════════════════════════════════════════╝
             """);
         IO.print("➜ File name: ");

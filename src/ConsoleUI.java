@@ -9,7 +9,7 @@ public class ConsoleUI {
     public static void header() {
         IO.println(CYAN + BOLD + """
                 ╔══════════════════════════════════════════════╗
-                ║              SONGS CATALOG APP              ║
+                ║              SONGS CATALOG APP               ║
                 ╚══════════════════════════════════════════════╝
                 """ + RESET);
     }
@@ -17,16 +17,16 @@ public class ConsoleUI {
     public static void menu() {
         IO.println(YELLOW + """
                 ╔══════════════════ MAIN MENU ═════════════════╗
-                ║  1. Add Song                                ║
-                ║  2. Remove Song                             ║
-                ║  3. Search Songs                            ║
-                ║  4. Sort Songs                              ║
-                ║  5. Import Songs                            ║
-                ║  6. Export Songs                            ║
-                ║  7. Undo                                    ║
-                ║  8. Redo                                    ║
-                ║  9. View Songs                              ║
-                ║  0. Exit                                    ║
+                ║  1. Add Song                                 ║
+                ║  2. Remove Song                              ║
+                ║  3. Search Songs                             ║
+                ║  4. Sort Songs                               ║
+                ║  5. Import Songs                             ║
+                ║  6. Export Songs                             ║
+                ║  7. Undo                                     ║
+                ║  8. Redo                                     ║
+                ║  9. View Songs                               ║ 
+                ║  0. Exit                                     ║
                 ╚══════════════════════════════════════════════╝
                 """ + RESET);
         IO.print("➜ Enter choice: ");
@@ -40,11 +40,7 @@ public class ConsoleUI {
         IO.println(RED + "✘ " + message + RESET);
     }
 
-    public static void info(String message) {
-        IO.println(CYAN + "➜ " + message + RESET);
-    }
 
-    public static void section(String title) {
-        IO.println(YELLOW + "════════════ " + title.toUpperCase() + " ════════════" + RESET);
-    }
+
+
 }
