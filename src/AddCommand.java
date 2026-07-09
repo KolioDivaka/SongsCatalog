@@ -2,6 +2,7 @@ import java.util.List;
 
 public class AddCommand implements Command {
     private final Song song;
+
     public AddCommand(Song song){
         this.song = song;
     }

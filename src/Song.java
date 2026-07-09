@@ -33,7 +33,7 @@ public class Song implements Serializable {
         return UUID.nameUUIDFromBytes(normalized.getBytes(StandardCharsets.UTF_8));
 
     }
-
+   //Pear jam  != Pear  jam
     public int getRate() {
         return rate;
     }

@@ -1,8 +1,5 @@
 import java.io.File;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class ClientHandler {
     Scanner sc = new Scanner(System.in);
@@ -14,25 +11,58 @@ public class ClientHandler {
         service.showSongs();
     }
 
+    private static void flush(){
+        System.out.flush();
+    }
+
 
     public void handleAddingSong() {
         IO.println("╔════════════════ Add Song════════════════╗");
-        IO.print("Title: ");
-        String title = sc.nextLine().trim();
 
-        IO.print("Artist: ");
-        String artist = sc.nextLine().trim();
+        String title = null, artist = null;
+        while(true){
+            IO.print("Title: ");
+            title = IO.readln();
+            flush();
+            if(title.isEmpty()){
+                IO.println("Adding Canceled!!");
+                return;
+            }
+            if(title.length() > 50){
+                IO.println("Title must be less than 50 characters!!");
+            }else {
+                break;
+            }
+        }
 
+
+
+        while(true) {
+            IO.print("Artist: ");
+            artist = IO.readln();
+            flush();
+            if(artist.isEmpty()){
+                IO.println("Adding Canceled!!");
+                return;
+            }
+            if(artist.length() > 50){
+                IO.println("Artist name must be less than 50 characters!!");
+            }else {
+                break;
+            }
+
+        }
         int rating;
         while (true) {
             IO.print("Rating (1-5): ");
             try {
                 rating = Integer.parseInt(sc.nextLine().trim());
+                flush();
                 if (rating >= 1 && rating <= 5) {
                     break;
                 }
                 IO.println("Rating must be between 1 and 5.");
-            } catch (NumberFormatException e) {
+            } catch (NumberFormatException|InputMismatchException e) {
                 IO.println("Please enter a valid number.");
             }
         }
@@ -41,10 +71,12 @@ public class ClientHandler {
         boolean added = service.addSongs(song);
         IO.println(added ? "✔ Song added." : "✘ Song already exists.");
     }
+
     public void handleRemovingSong() {
         IO.println("╔════════════════ Remove Song ════════════════╗");
         IO.print(" Search by title or artist: ");
         String keyword = sc.nextLine().trim();
+        flush();
 
         List<Song> matches = service.searchSongs(keyword);
 
@@ -59,29 +91,35 @@ public class ClientHandler {
         for (int i = 0; i < matches.size(); i++) {
             IO.println("║ " + (i + 1) + ". " + matches.get(i));
         }
-        IO.println("╠═════════════════════════════════════════════╣");
-        IO.print(" Choose a song to delete (0 to cancel): ");
+
 
         int choice;
-        try {
+        while (true){try {
+            IO.println("╠═════════════════════════════════════════════╣");
+            IO.print(" Choose a song to delete (0 to cancel): ");
             choice = Integer.parseInt(sc.nextLine().trim());
-        } catch (NumberFormatException e) {
-            IO.println("║ Invalid number.                             ║");
-            IO.println("╚═════════════════════════════════════════════╝");
-            return;
+            flush();
+            if (choice == 0) {
+                IO.println("║ Removal cancelled.                          ║");
+                IO.println("╚═════════════════════════════════════════════╝");
+                return;
+            }
+
+            if (choice < 1 || choice > matches.size()) {
+                IO.println("║ Invalid choice.                             ║");
+                IO.println("╚═════════════════════════════════════════════╝");
+            }
+            else {
+                break;
+            }
+            } catch (NumberFormatException | InputMismatchException e) {
+                IO.println("║ Invalid number.                             ║");
+                IO.println("╚═════════════════════════════════════════════╝");
+
+            }
+
         }
 
-        if (choice == 0) {
-            IO.println("║ Removal cancelled.                          ║");
-            IO.println("╚═════════════════════════════════════════════╝");
-            return;
-        }
-
-        if (choice < 1 || choice > matches.size()) {
-            IO.println("║ Invalid choice.                             ║");
-            IO.println("╚═════════════════════════════════════════════╝");
-            return;
-        }
 
         Song target = matches.get(choice - 1);
         boolean result = service.removeSongs(target);
@@ -97,6 +135,13 @@ public class ClientHandler {
         IO.println("╔════════════════ Search Songs ═══════════════╗");
         IO.print(" Search by title or artist: ");
         String keyword = sc.nextLine().trim();
+        flush();
+        if(keyword.isEmpty()){
+            IO.println("╠═════════════════════════════════════════════╣");
+            IO.println(" Search Canceled!!!");
+            IO.println("╚═════════════════════════════════════════════╝");
+            return;
+        }
 
         List<Song> matches = service.searchSongs(keyword);
 
@@ -113,6 +158,7 @@ public class ClientHandler {
         }
         IO.println("╚═════════════════════════════════════════════╝");
     }
+
     public void handleSorting() {
         IO.println("""
             ╔════════════════ SORT SONGS ════════════════╗
@@ -125,11 +171,26 @@ public class ClientHandler {
             ╚════════════════════════════════════════════╝
             """);
 
-        IO.print("➜ Enter choice: ");
-        int choice = sc.nextInt();
-        if (choice < 1 || choice > 3) {
-            IO.println("Invalid choice.");
-            return;
+        int choice;
+        while (true) {
+            try {
+                 IO.print("➜ Enter choice: ");
+                 choice = Integer.parseInt(sc.nextLine().trim());
+                 flush();
+                if (choice < 1 || choice > 3) {
+                    IO.println("Invalid choice.");
+                }
+                else if (choice == 0) {
+                    IO.println("Sorting Cancelled.");
+                    return;
+                }
+                else {
+                    break;
+                }
+            }catch (NumberFormatException|InputMismatchException e) {
+                IO.println("Please enter a valid number.");
+
+            }
         }
 
         IO.println("""
@@ -138,16 +199,29 @@ public class ClientHandler {
             ║                                            ║
             ║  (1) Asc                                   ║
             ║  (2) Desc                                  ║
+            ║  (0) Cancel                                ║
             ╚════════════════════════════════════════════╝
             """);
-
-        IO.print("➜ Enter order: ");
-        int order = sc.nextInt();
-        if (order < 1 || order > 2) {
-            IO.println("Invalid order!!!");
-            return;
+        int order;
+        while (true) {
+            try {
+                IO.print("➜ Enter order: ");
+                order = Integer.parseInt(sc.nextLine().trim());
+                flush();
+                if (order < 0 || order > 2) {
+                    IO.println("Invalid order!!!");
+                }
+                else if (order == 0) {
+                    IO.println("Sorting Cancelled.");
+                    return;
+                }
+                else  {
+                    break;
+                }
+            }catch (NumberFormatException|InputMismatchException e) {
+                IO.println("Please enter a valid number.");
+            }
         }
-
         boolean desc = order == 2;
 
         switch (choice) {
@@ -163,9 +237,7 @@ public class ClientHandler {
                 service.sortByRate(desc);
                 service.showSongs();
                 break;
-            default:
-                IO.println("Invalid choice!!!");
-                break;
+
         }
     }
 
@@ -173,6 +245,7 @@ public class ClientHandler {
     public void handleUndo(){
         service.undo();
     }
+
     public void handleRedo(){
         service.redo();
     }
@@ -212,13 +285,28 @@ public class ClientHandler {
         IO.println("║                                              ║");
         IO.println("║  0. Cancel                                   ║");
         IO.println("╚══════════════════════════════════════════════╝");
-        IO.print("➜ Enter choice: ");
 
-        int choice = sc.nextInt();
-        if (choice == 0 || choice > files.length) {
-            IO.println("Import canceled.");
-            return;
+        int choice;
+        while (true) {
+            try {
+                IO.print("➜ Enter choice: ");
+                choice = sc.nextInt();
+                flush();
+                if (choice == 0) {
+                    IO.println("Import canceled.");
+                    return;
+                }
+                else if (choice<0 || choice > files.length) {
+                    IO.println("Invalid choice.");
+                }
+                else {
+                    break;
+                }
+            }catch (NumberFormatException|InputMismatchException e) {
+                IO.println("Please enter a valid number.");
+            }
         }
+
 
         File selectedFile = files[choice - 1];
         service.mergeCatalogs(selectedFile);
@@ -230,8 +318,18 @@ public class ClientHandler {
             ║ Enter a name for the export file:           ║
             ╚═════════════════════════════════════════════╝
             """);
-        IO.print("➜ File name: ");
-        String fileName = IO.readln();
+        String fileName = null;
+        while (true) {
+            IO.print("➜ File name: ");
+            fileName = IO.readln().trim();
+            flush();
+            if (fileName.isEmpty()) {
+                IO.println("Please enter a valid file name.");
+            }
+            else {
+                break;
+            }
+        }
         service.exportCatalogs(fileName);
     }
 }

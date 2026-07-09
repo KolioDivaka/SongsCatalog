@@ -12,6 +12,7 @@ void main() {
         IO.print("Choice: ");
 
         int choice = Integer.parseInt(scanner.nextLine());
+        System.out.flush();
 
         switch (choice) {
             case 1 -> clientHandler.handleAddingSong();

@@ -38,7 +38,7 @@ public class SongCatalog {
         IO.println("╔════════════════ YOUR CATALOG ═══════════════╗");
 
         if (songs.isEmpty()) {
-            IO.println("║ There are no songs in the catalog.          ║");
+            IO.println("║ There are no songs in the catalog.           ║");
             IO.println("╚══════════════════════════════════════════════╝");
             return;
         }
@@ -49,20 +49,23 @@ public class SongCatalog {
 
         IO.println("╚══════════════════════════════════════════════╝");
     }
+
     public boolean addSongs(Song song){
         List<Song> songs = getAllSongs();
-        if(songs.stream().anyMatch(s->s.getId()==song.getId())){
+        if(songs.stream().anyMatch(s->s.getId().equals(song.getId()))){
             return false;
         }
         history.run(new AddCommand(song),songs);
         saveAll(songs);
         return true;
     }
+
     public List<Song> searchSongs(String keyword){
         List<Song> songs = getAllSongs();
         if(keyword==null || keyword.isBlank()){
             return songs;
         }
+        //fush buffer
         String normalizedKeyword = keyword.toLowerCase().trim();
         return  songs.stream()
                 .filter(s-> s.getTitle().toLowerCase()
@@ -98,7 +101,7 @@ public class SongCatalog {
         Comparator<Song> comparator =
                 Comparator.comparing(Song::getTitle, String.CASE_INSENSITIVE_ORDER);
 
-        songs.sort(descending ? comparator : comparator.reversed());
+        songs.sort(descending ? comparator.reversed() : comparator);
         saveAll(songs);
     }
 
@@ -115,6 +118,7 @@ public class SongCatalog {
         songs.sort(descending ? comparator.reversed() : comparator);
         saveAll(songs);
     }
+
     public void sortByRate(boolean descending) {
         List<Song> songs = getAllSongs();
         if(songs.isEmpty()){IO.println("""
@@ -146,8 +150,8 @@ public class SongCatalog {
         } catch (IOException | ClassNotFoundException e) {
             IO.println("""
                 ╔════════════════ IMPORT SONGS ═══════════════╗
-                ║ Merge failed: could not read the catalog.  ║
-                ╚══════════════════════════════════════════════╝
+                ║ Merge failed: could not read the catalog.   ║
+                ╚═════════════════════════════════════════════╝
                 """);
             IO.println("Reason: " + e.getMessage());
             return;
@@ -177,13 +181,13 @@ public class SongCatalog {
             saveAll(songs);
             IO.println("""
                 ╔════════════════ UNDO ════════════════╗
-                ║ Last action was undone.             ║
+                ║ Last action was undone.              ║
                 ╚══════════════════════════════════════╝
                 """);
         } else {
             IO.println("""
                 ╔════════════════ UNDO ════════════════╗
-                ║ Nothing to undo.                    ║
+                ║ Nothing to undo.                     ║
                 ╚══════════════════════════════════════╝
                 """);
         }
@@ -196,13 +200,13 @@ public class SongCatalog {
             saveAll(songs);
             IO.println("""
                 ╔════════════════ REDO ════════════════╗
-                ║ Last undone action was restored.    ║
+                ║ Last undone action was restored.     ║
                 ╚══════════════════════════════════════╝
                 """);
         } else {
             IO.println("""
                 ╔════════════════ REDO ════════════════╗
-                ║ Nothing to redo.                    ║
+                ║ Nothing to redo.                     ║
                 ╚══════════════════════════════════════╝
                 """);
         }
@@ -215,14 +219,17 @@ public class SongCatalog {
             if (!created) {
                 IO.println("""
                     ╔════════════════ EXPORT SONGS ═══════════════╗
-                    ║ Error: could not create the imports folder.║
-                    ╚══════════════════════════════════════════════╝
+                    ║ Error: could not create the imports folder. ║
+                    ╚═════════════════════════════════════════════╝
                     """);
                 return;
             }
         }
 
-        if (!fileName.endsWith(".bin")) fileName += ".bin";
+        if (!fileName.endsWith(".bin"))
+        {
+            fileName += ".bin";
+        }
 
         File exportsFile = new File(importsFolder, fileName);
         List<Song> songs = getAllSongs();

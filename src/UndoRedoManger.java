@@ -22,7 +22,9 @@ public class UndoRedoManger {
     }
 
     public boolean undo(List<Song> catalog) {
-        if(undoStack.isEmpty()) {return false;}
+        if(undoStack.isEmpty()) {
+            return false;
+        }
         Command cmd = undoStack.pop();
         cmd.undo(catalog);
         redoStack.push(cmd);
@@ -30,7 +32,9 @@ public class UndoRedoManger {
         return true;
     }
     public boolean redo(List<Song> catalog) {
-        if(redoStack.isEmpty()) {return false;}
+        if(redoStack.isEmpty()) {
+            return false;
+        }
         Command cmd = redoStack.pop();
         cmd.execute(catalog);
         undoStack.push(cmd);
